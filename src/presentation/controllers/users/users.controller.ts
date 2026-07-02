@@ -16,27 +16,31 @@ import { CreateUserDto } from '../../../application/dto/create-user.dto';
 import { UsersService } from '../../../application/services/users/users.service';
 
 @ApiTags('Users')
-@ApiBearerAuth()
-@UseGuards(AuthGuard('jwt'))
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
-  }
-
-  @Get(':id')
-  findById(@Param('id') id: string) {
-    return this.usersService.findById(id);
-  }
 
   @Post()
   create(@Body() data: CreateUserDto) {
     return this.usersService.create(data);
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @Get()
+  findAll() {
+    return this.usersService.findAll();
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @Get(':id')
+  findById(@Param('id') id: string) {
+    return this.usersService.findById(id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -45,6 +49,8 @@ export class UsersController {
     return this.usersService.update(id, data);
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @Delete(':id')
   delete(@Param('id') id: string) {
     return this.usersService.delete(id);

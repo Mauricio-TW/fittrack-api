@@ -8,6 +8,15 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Habilita o CORS para o frontend
+  app.enableCors({
+    origin: 'http://localhost:3001',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  });
+
+  // Validação global
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -16,6 +25,7 @@ async function bootstrap() {
     }),
   );
 
+  // Configuração do Swagger
   const config = new DocumentBuilder()
     .setTitle('FitTrack API')
     .setDescription('API backend para gestão de usuários e treinos')
@@ -28,6 +38,9 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   await app.listen(3000);
+
+  console.log('🚀 API rodando em http://localhost:3000');
+  console.log('📚 Swagger: http://localhost:3000/docs');
 }
 
 bootstrap();

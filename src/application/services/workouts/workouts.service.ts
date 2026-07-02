@@ -28,7 +28,7 @@ export class WorkoutsService {
   const cachedWorkouts =
     await this.cacheManager.get<WorkoutEntity[]>(cacheKey);
 
-  if (cachedWorkouts !== undefined && cachedWorkouts !== null) {
+  if (cachedWorkouts) {
     console.log('Buscando treinos do cache');
     return cachedWorkouts;
   }
@@ -39,7 +39,7 @@ export class WorkoutsService {
     where: { userId },
   });
 
-  await this.cacheManager.set(cacheKey, workouts);
+  await this.cacheManager.set(cacheKey, workouts,600); // Cache por 10 minutos
 
   return workouts;
 }
