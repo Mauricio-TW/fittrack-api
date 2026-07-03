@@ -10,12 +10,15 @@ async function bootstrap() {
 
   // Habilita o CORS para o frontend
   app.enableCors({
-    origin: 'http://localhost:3001',
+    origin: [
+      'http://localhost:3001', 
+      'https://fittrack-front-q8ey.onrender.com'
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
-
+  
   // Validação global
   app.useGlobalPipes(
     new ValidationPipe({
