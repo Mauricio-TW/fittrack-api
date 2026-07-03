@@ -2,36 +2,36 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { api } from '../services/api';
-import styles from './page.module.css';
+import { api } from '../../services/api';
+import styles from '../page.module.css';
 
-export default function LoginPage() {
-  const [email, setEmail] = useState('donald@email.com');
-  const [password, setPassword] = useState('123456');
+export default function RegisterPage() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  async function handleLogin(event: React.FormEvent) {
+  async function handleRegister(event: React.FormEvent) {
     event.preventDefault();
 
     try {
       setLoading(true);
       setError('');
 
-      const response = await api.post('/auth/login', {
+      await api.post('/users', {
+        name,
         email,
         password,
       });
 
-      const token = response.data.access_token;
-
-      localStorage.setItem('token', token);
-
-      window.location.href = '/dashboard';
+      alert('Usuário cadastrado com sucesso!');
+      window.location.href = '/';
     } catch (error: any) {
       setError(
         error.response?.data?.message ||
-          'Erro ao fazer login',
+          'Erro ao cadastrar usuário',
       );
     } finally {
       setLoading(false);
@@ -44,13 +44,22 @@ export default function LoginPage() {
         <h1 className={styles.title}>🏋️ FitTrack</h1>
 
         <p className={styles.subtitle}>
-          Gerencie seus treinos com facilidade
+          Crie sua conta para gerenciar seus treinos
         </p>
 
         <form
-          onSubmit={handleLogin}
+          onSubmit={handleRegister}
           className={styles.form}
         >
+          <input
+            className={styles.input}
+            placeholder="Nome"
+            value={name}
+            onChange={(event) =>
+              setName(event.target.value)
+            }
+          />
+
           <input
             className={styles.input}
             placeholder="E-mail"
@@ -75,7 +84,7 @@ export default function LoginPage() {
             type="submit"
             disabled={loading}
           >
-            {loading ? 'Entrando...' : 'Entrar'}
+            {loading ? 'Cadastrando...' : 'Criar conta'}
           </button>
         </form>
 
@@ -83,11 +92,11 @@ export default function LoginPage() {
           <p className={styles.error}>{error}</p>
         )}
 
-        <div className={styles.footerText}>
-          <p>Ainda não possui uma conta?</p>
+       <div className={styles.footerText}>
+        <p>Já possui uma conta?</p>
 
-          <Link href="/register">Criar uma conta</Link>
-        </div>
+        <Link href="/">Entrar</Link>
+      </div>
       </section>
     </main>
   );

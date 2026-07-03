@@ -182,9 +182,7 @@ export default function DashboardPage() {
           <p>Gerencie seus treinos, exercícios, séries, cargas e repetições.</p>
         </div>
 
-        <button type="button" className={styles.logoutButton} onClick={handleLogout}>
-          Sair
-        </button>
+        
       </header>
 
       <section className={styles.stats}>
@@ -372,11 +370,19 @@ export default function DashboardPage() {
                     Excluir
                   </button>
                 </div>
+
               </article>
             ))
+            
           )}
         </div>
+        <div>
+          <button type="button" className={styles.logoutButton} onClick={handleLogout}>
+            Sair
+            </button>
+        </div>
       </section>
+          
     </main>
   );
 }
